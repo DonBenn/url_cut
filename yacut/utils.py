@@ -1,7 +1,7 @@
 import random
 import string
 
-from short_url.models import ShortLink
+from .models import URLMap
 from .constants import MAX_SHORT_URL_LENGTH
 
 
@@ -14,5 +14,5 @@ def get_unique_short_id():
                 MAX_SHORT_URL_LENGTH
             )
         )
-        if not ShortLink.objects.filter(short_url=short_url).exists():
+        if not URLMap.query.filter_by(short=short_url).exists():
             return short_url
