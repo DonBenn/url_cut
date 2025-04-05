@@ -14,5 +14,5 @@ def get_unique_short_id():
                 MAX_SHORT_URL_LENGTH
             )
         )
-        if not URLMap.query.filter_by(short=short_url).exists():
+        if not URLMap.query.filter_by(short=short_url).first():
             return short_url
