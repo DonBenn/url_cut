@@ -25,9 +25,8 @@ def get_short_url_view():
         )
         db.session.add(opinion)
         db.session.commit()
-        flash(
-            f'Короткая ссылка: '
-            f'{url_for("redirect_view", short_id=short_url, _external=True)}')
+        # flash({url_for("redirect_view", short_id=short_url, _external=True)})
+        flash(short_url)
     return render_template('short_url.html', form=form)
 
 

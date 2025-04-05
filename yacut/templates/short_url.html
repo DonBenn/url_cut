@@ -32,13 +32,13 @@
               {{ form.submit(class="btn btn-primary", value="Создать") }}
             </form>
             <p class="py-3 mb-3">
-              {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                  {% for message in messages %}
-                    {{ message }}
-                  {% endfor %}
-                {% endif %}
-              {% endwith %}
+<!--              {% with messages = get_flashed_messages() %}-->
+<!--                {% if messages %}-->
+<!--                  {% for message in messages %}-->
+<!--                    {{ message }}-->
+<!--                  {% endfor %}-->
+<!--                {% endif %}-->
+<!--              {% endwith %}-->
             </p>
 <!--          <form>-->
 <!--            <div>-->
@@ -64,7 +64,21 @@
         </div>
         <div class="col-sm">
           <p class="text-center">
-          <h5 class="text-center">Пример информационного сообщения</h5>
+<!--          <h5 class="text-center">Пример информационного сообщения</h5>-->
+            <p class="py-3 mb-3">
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in messages %}
+<!--                    {{ message }}-->
+                    <div class="alert alert-success">
+<!--                        <a href="http://localhost/{{ message }}">Короткая ссылка: {{ message }}</a>-->
+                        <h5 class="text-center">Ваша коротка ссылка</h5>
+                        <a href="{{ message }}">Короткая ссылка: </a>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            </p>
           </p>
         </div>
         <div class="col-sm">
