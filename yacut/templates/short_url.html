@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+  <section class="container my-5 px-4">
+    <h1 class="text-center"><span style="color:red">Ya</span>Cut</h1>
+    <p class="text-center my-4">
+      Создайте короткую ссылку автоматически или предложите свой вариант
+    </p>
+    <div class="container">
+      <div class="row my-3">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+            <form method="POST" novalidate>
+              {{ form.csrf_token }}
+              {{ form.original_link(class="form-control form-control-lg py-3 mb-3", placeholder="Длинная ссылка") }}
+              <p>
+                {% if form.original_link.errors %}
+                  {% for error in form.original_link.errors %}
+                    <span style="color: red">{{ error }}</span>
+                  {% endfor %}
+                {% endif %}
+              </p>
+              {{ form.custom_id(class="form-control form-control-lg py-3 mb-3", placeholder="Ваш вариант короткой ссылки", rows="3", cols="40")}}
+              <p class="text-danger">
+                {% if form.custom_id.errors %}
+                  {% for error in form.custom_id.errors %}
+                    <span style="color: red">{{ error }}</span>
+                  {% endfor %}
+                {% endif %}
+              </p>
+              {{ form.submit(class="btn btn-primary", value="Создать") }}
+            </form>
+            <p class="py-3 mb-3">
+            </p>
+        </div>
+        <div class="col-sm">
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row ">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+          <p class="text-center">
+            <p class="py-3 mb-3">
+              {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    {% if category == 'success' %}
+                      <div class="alert alert-success">
+<!--                                <a href="http://localhost/{{ message }}"></a>-->
+                        <h3 class="text-center">Ваша коротка ссылка:</h3>
+                        <a class="text-center" href="{{ message }}">http://localhost/{{ message }}</a>
+                      </div>
+                    {% elif category == 'error' %}
+                      <div class="alert alert-danger">
+                        {{ message }}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            </p>
+          </p>
+        </div>
+        <div class="col-sm">
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
