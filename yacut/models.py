@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from . import db
-
+from .constants import MAX_SHORT_ID_LENGTH
 
 class URLMap(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     original = db.Column(db.String, unique=True, nullable=False)
-    short = db.Column(db.String, unique=True)
+    short = db.Column(db.String(MAX_SHORT_ID_LENGTH), unique=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
 
     def to_dict(self):
