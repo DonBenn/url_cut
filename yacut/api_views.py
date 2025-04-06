@@ -34,7 +34,14 @@ def get_short_link():
         raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
 
     if URLMap.query.filter_by(original=data['url']).first() is not None:
-        raise InvalidAPIUsage('Предложенный вариант короткой ссылки уже существует.')
+        raise InvalidAPIUsage(
+            'Предложенный вариант короткой ссылки уже существует.'
+        )
+
+    if URLMap.query.filter_by(short=data['custom_id']).first() is not None:
+        raise InvalidAPIUsage(
+            'Эта ссылка уже есть в базе данных'
+        )
 
     for element in data['custom_id']:
         if element not in string.digits + string.ascii_letters:
@@ -49,4 +56,3 @@ def get_short_link():
     return jsonify(
         {'url': result['original'], 'short_link': url_for(
             "redirect_view", short_id=result['short'], _external=True)}), 201
-
