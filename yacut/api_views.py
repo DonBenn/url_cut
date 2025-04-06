@@ -19,25 +19,28 @@ def get_original_link(short_id):
 
 @app.route('/api/id/', methods=['POST'])
 def get_short_link():
-    data = request.get_json()
+    data = request.get_json(silent=True)
+
     if data is None:
         raise InvalidAPIUsage('Отсутствует тело запроса')
-    if 'url' not in data and 'custom_id' not in data:
-        raise InvalidAPIUsage('"url" является обязательным полем!')
+
     if 'url' not in data:
         raise InvalidAPIUsage('"url" является обязательным полем!')
-    if 'custom_id' not in data:
+
+    if 'custom_id' not in data or not data['custom_id']:
         data['custom_id'] = get_unique_short_id()
-    if not data['custom_id']:
-        data['custom_id'] = get_unique_short_id()
+
     if len(data['custom_id']) > MAX_SHORT_ID_LENGTH:
         raise InvalidAPIUsage('Указано недопустимое имя для короткой ссылки')
+
     if URLMap.query.filter_by(original=data['url']).first() is not None:
         raise InvalidAPIUsage('Предложенный вариант короткой ссылки уже существует.')
+
     for element in data['custom_id']:
         if element not in string.digits + string.ascii_letters:
             raise InvalidAPIUsage(
                 'Указано недопустимое имя для короткой ссылки')
+
     link = URLMap()
     link.from_dict(data)
     db.session.add(link)
@@ -46,3 +49,4 @@ def get_short_link():
     return jsonify(
         {'url': result['original'], 'short_link': url_for(
             "redirect_view", short_id=result['short'], _external=True)}), 201
+
